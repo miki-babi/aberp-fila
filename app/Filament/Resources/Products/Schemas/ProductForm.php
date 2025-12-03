@@ -18,6 +18,9 @@ class ProductForm
                 TextInput::make('name')
                     ->required()
                     ->label('Product Name'),
+                TextInput::make('price')
+                ->numeric()
+                ->label('product price '),
 
                 FileUpload::make('image')
                     ->image()           // only allow images

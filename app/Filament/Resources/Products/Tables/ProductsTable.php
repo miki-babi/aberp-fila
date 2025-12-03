@@ -17,6 +17,7 @@ class ProductsTable
             ->columns([
                 //
                 TextColumn::make('name')->label('Product Name'),
+                TextColumn::make('price'),
                 TextColumn::make('category.name')->label('Category'),
                 TextColumn::make('subCategory.name')->label('Sub Category'),
                 TextColumn::make('spec.name')->label('Specs'),
@@ -25,6 +26,7 @@ class ProductsTable
                     ->disk('public')   // matches the disk used in FileUpload
                     ->square()         // optional: makes thumbnail square
                     ->imageHeight(80),          // optional: control displayed size
+                
             ])
             ->filters([
                 //

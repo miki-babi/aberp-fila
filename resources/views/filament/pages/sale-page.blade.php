@@ -1,9 +1,8 @@
 <x-filament-panels::page>
 
-<div>
-    {{-- <div class="flex items-center justify-center min-h-screen py-4 lg:py-8 px-4"> --}}
-        <div
-            class="">
+    <div>
+        {{-- <div class="flex items-center justify-center min-h-screen py-4 lg:py-8 px-4"> --}}
+        <div class="">
             <!-- Session Messages -->
             @if (session('success'))
                 <div class="bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded mb-4 relative">
@@ -144,6 +143,7 @@
                             class="product w-full mt-1 p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="">Select Product</option>
                         </select>
+                        <div class="product-price mt-2 text-emerald-400 font-semibold" style="display: none;"></div>
 
                         <!-- Quantity & Price -->
                         <!-- Quantity & Payment Breakdown -->
@@ -203,6 +203,13 @@
                     newRow.querySelectorAll('select, input').forEach(el => {
                         el.value = '';
                     });
+
+                    // Reset price display in cloned row
+                    const priceDisplay = newRow.querySelector('.product-price');
+                    if (priceDisplay) {
+                        priceDisplay.textContent = '';
+                        priceDisplay.style.display = 'none';
+                    }
 
                     saleItems.appendChild(newRow);
                     attachEventsToRow(newRow);
@@ -281,9 +288,24 @@
                                     const opt = document.createElement('option');
                                     opt.value = item.id;
                                     opt.text = item.name;
+                                    opt.setAttribute('data-price', item.price || 0);
                                     product.appendChild(opt);
                                 });
                             });
+                    });
+
+                    // Show price when product is selected
+                    product.addEventListener('change', function() {
+                        const priceDisplay = row.querySelector('.product-price');
+                        const selectedOption = this.options[this.selectedIndex];
+
+                        if (this.value && selectedOption) {
+                            const price = selectedOption.getAttribute('data-price');
+                            priceDisplay.textContent = `Price: $${parseFloat(price).toFixed(2)}`;
+                            priceDisplay.style.display = 'block';
+                        } else {
+                            priceDisplay.style.display = 'none';
+                        }
                     });
                 }
 
